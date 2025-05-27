@@ -3,7 +3,8 @@ import { Link } from 'react-router-dom';
 import { useForm } from "react-hook-form";
 import Login from './Login';
 
-const Signup = () => {
+const Signup = () => 
+  {
   const {
     register,
     handleSubmit,

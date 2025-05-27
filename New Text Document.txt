@@ -7,3 +7,5 @@ libraries used
 ->daisyUi
 ->tailwindcss
 ->react router dom
+->.env installed
+->nodemon installed
