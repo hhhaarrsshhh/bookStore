@@ -1,7 +1,26 @@
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import Card from './Card'
-import list from '../listBooks/list.json'
+import axios from 'axios';
+
 const Course = () => {
+  const [book,setBook]=useState([])
+ useEffect(() => {
+  const getBook = async () => {
+    try {
+      const res = await axios.get("http://localhost:3001/book");
+      console.log(res.data);  // Fixed the typo: comma to period
+      setBook(res.data);
+    } catch (err) {
+      console.log(err);
+    }
+  };
+
+  getBook();  // Ensure the function is called
+}, []);
+
+
+
+
   return (
     <>
         <div className='max-w-screen-2xl container mx-auto md:px-20 px-4'>
@@ -23,7 +42,8 @@ const Course = () => {
               </button>
               </a>
               <div className='grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 text-left'>
-                {list.map((item)=>{
+                
+                {book.map((item)=>{
                   return <Card key={item.id} item={item}/>
                 })
 

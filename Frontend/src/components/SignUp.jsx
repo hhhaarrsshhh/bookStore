@@ -1,17 +1,46 @@
 import React from 'react';
-import { Link } from 'react-router-dom';
+import { Link, Navigate, useLocation,useNavigate } from 'react-router-dom';
 import { useForm } from "react-hook-form";
 import Login from './Login';
-
+import axios from 'axios';
+import { toast } from 'react-hot-toast';
 const Signup = () => 
   {
+    const Navigate=useNavigate()
+    const location=useLocation()
+    const from=location.state?.from?.pathname||"/";
   const {
     register,
     handleSubmit,
     formState: { errors },
   } = useForm();
 
-  const onSubmit = (data) => console.log(data);
+  const onSubmit =async (data) => {
+  const userInfo={
+  fullname:data.fullname,
+  emailid:data.emailid,
+  password:data.password 
+
+}  
+await axios.post("http://localhost:3001/user/signup",userInfo)
+.then((res)=>{
+  console.log(res.data)
+  if(res.data){
+    //alert("User created successfully")
+    toast.success("User created successfully");
+    Navigate(from ,{replace:true})
+  }
+  localStorage.setItem("Users",JSON.stringify(res.data.user));
+
+}).catch((err)=>{
+  if(err.response){
+    console.log(err)
+    //alert("Errror"+err.response.data.message);
+    toast.error(err.response.data.message);
+  }
+  
+})
+};
 
   return (
 <div className="flex items-center justify-center min-h-screen p-4 flex-col">
@@ -49,7 +78,7 @@ const Signup = () =>
             type="email"
             placeholder="Enter your email"
             className="w-full px-3 py-2 border rounded-md outline-none"
-            {...register("email", { required: true })}
+            {...register("emailid", { required: true })}
           />
           {errors.email && (
             <span className="text-sm text-red-500">This field is required</span>

@@ -9,3 +9,5 @@ libraries used
 ->react router dom
 ->.env installed
 ->nodemon installed
+->axios
+->cors installed in backend

@@ -8,5 +8,5 @@ const bookSchema=new mongoose.Schema({
     img1:String
 })
 
-const Book=mongoose.modelNames("Book",bookSchema);
+const Book=mongoose.model("Book",bookSchema);
 export default Book

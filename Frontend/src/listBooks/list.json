@@ -46,5 +46,21 @@
     "price": 90,
     "category": "free",
     "img1": "https://media.istockphoto.com/id/2167740181/photo/a-librarys-quiet-embrace-rows-of-books-lining-wooden-shelves.jpg?s=1024x1024&w=is&k=20&c=r92Zjbb3laLVBqlFRS3mi3_d0pY4kE5cSoQZ4SvBY4I="
+  },
+  {
+    "id": 7,
+    "name": "Book7",
+    "title": "New book description with different category.",
+    "price": 250,
+    "category": "premium",
+    "img1": "https://media.istockphoto.com/id/2167740181/photo/a-librarys-quiet-embrace-rows-of-books-lining-wooden-shelves.jpg?s=1024x1024&w=is&k=20&c=r92Zjbb3laLVBqlFRS3mi3_d0pY4kE5cSoQZ4SvBY4I="
+  },
+  {
+    "id": 8,
+    "name": "Book8",
+    "title": "Another premium book with a unique description.",
+    "price": 300,
+    "category": "premium",
+    "img1": "https://media.istockphoto.com/id/2167740181/photo/a-librarys-quiet-embrace-rows-of-books-lining-wooden-shelves.jpg?s=1024x1024&w=is&k=20&c=r92Zjbb3laLVBqlFRS3mi3_d0pY4kE5cSoQZ4SvBY4I="
   }
 ]

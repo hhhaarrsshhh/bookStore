@@ -1,14 +1,30 @@
-import React from 'react'
+import React, { useEffect, useState } from "react";
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
-import Slider from 'react-slick';
-import list from '../listBooks/list.json'
-import Card from './Card';
+import Slider from "react-slick";
+import axios from "axios";
+import Card from "./Card";
 
-const FreeBook = () => {
-    const filterData=list.filter((data)=>(data.category==="free"));
-    
-    var settings = {
+function Freebook() {
+  const [book, setBook] = useState([]);
+
+  useEffect(() => {
+    const getBook = async () => {
+      try {
+        const res = await axios.get("http://localhost:3001/book");
+        // Case-insensitive check for category
+        const data = res.data.filter((item) => item.category.toLowerCase() === "free");
+        setBook(data);
+      } 
+      
+      catch (err) {
+        console.log(err);
+      }
+    };
+    getBook();
+  }, []);
+
+  const settings = {
     dots: true,
     infinite: false,
     speed: 500,
@@ -22,49 +38,45 @@ const FreeBook = () => {
           slidesToShow: 3,
           slidesToScroll: 3,
           infinite: true,
-          dots: true
-        }
+          dots: true,
+        },
       },
       {
         breakpoint: 600,
         settings: {
           slidesToShow: 2,
           slidesToScroll: 2,
-          initialSlide: 2
-        }
+          initialSlide: 2,
+        },
       },
       {
         breakpoint: 480,
         settings: {
           slidesToShow: 1,
-          slidesToScroll: 1
-        }
-      }
-    ]
+          slidesToScroll: 1,
+        },
+      },
+    ],
   };
 
-    return (
-    <>
-        <div className='max-w-screen-2xl container mx-auto md:px-20 px-4'>
-            <h1 className='font-semibold text-xl pb-2'>Free offered Books</h1>
-            <p>
-                Here are some free books that you can download. You can also check out our
-            </p>
+  return (
+    <div className="max-w-screen-2xl container mx-auto md:px-20 px-4">
+      <div>
+        <h1 className="font-semibold text-xl pb-2">Free Offered Courses</h1>
+        <p>
+          Lorem ipsum dolor sit amet, consectetur adipisicing elit. Accusantium
+          veritatis alias pariatur ad dolor repudiandae eligendi corporis nulla
+          non suscipit, iure neque earum?
+        </p>
+      </div>
 
-        
-
-
-    
-        <Slider {...settings}>
-            {filterData.map((item)=>{
-               return <Card item={item} key={item.id} />
-            })}
-        
-       </Slider>
+      <Slider {...settings}>
+        {book.map((item) => (
+          <Card item={item} key={item.id} />
+        ))}
+      </Slider>
     </div>
-      
-    </>
-  )
+  );
 }
 
-export default FreeBook
+export default Freebook;

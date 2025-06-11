@@ -1,7 +1,9 @@
 import React, { useEffect, useState } from 'react';
 import Login from './Login';
-
+import { useAuth } from '../context/AuthProvider';
+import Logout from './Logout';
 const Navbar = () => {
+ const[authUser,setAuthUser]=useAuth()
   const [sticky, setSticky] = useState(false);
 
  useEffect(() => {
@@ -70,11 +72,23 @@ const Navbar = () => {
 
             
           </label>
+          {
+  authUser ? (
+    <Logout />
+  ) : (
+    <>
+      <a
+        className="btn"
+        onClick={() => document.getElementById('my_modal_3').showModal()}
+      >
+        Login
+      </a>
+      <Login />
+    </>
+  )
+}
 
-          <a  className="btn" onClick={()=>document.getElementById('my_modal_3').showModal()}>
-            Login
-          </a>
-          <Login/>
+          
         </div>
       </div>
     </div>
