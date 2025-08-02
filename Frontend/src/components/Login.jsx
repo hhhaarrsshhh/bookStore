@@ -1,100 +1,116 @@
 import React from 'react';
+// Importing Link for navigation to Signup page
 import { Link } from 'react-router-dom';
+// React Hook Form for form state handling and validation
 import { useForm } from "react-hook-form";
+// Axios for making HTTP requests
 import axios from 'axios';
+// Toast for showing popup messages
 import { toast } from 'react-hot-toast';
-import { useNavigate,useLocation } from 'react-router-dom';
+// useNavigate for redirecting, useLocation for accessing previous route info
+import { useNavigate, useLocation } from 'react-router-dom';
+
 const Login = () => {
-  const Navigate=useNavigate()
-      const location=useLocation()
-      const from=location.state?.from?.pathname||"/";
+  // Hook to programmatically navigate between routes
+  const Navigate = useNavigate();
+  // Hook to get current location object
+  const location = useLocation();
+
+  // Getting the route user came from, or fallback to "/"
+  const from = location.state?.from?.pathname || "/";
+
+  // Destructuring form utilities from useForm
   const {
-    register,
-    handleSubmit,
-    formState: { errors },
+    register,         // Used to register input fields
+    handleSubmit,     // Handles form submission
+    formState: { errors }, // Contains validation errors
   } = useForm();
 
+  // Function that gets called on form submit
   const onSubmit = async (data) => {
-    const userInfo={
-    emailid:data.emailid,
-    password:data.password 
+    // Preparing user info payload for login API
+    const userInfo = {
+      emailid: data.emailid,
+      password: data.password
+    };
 
-}  
-await axios.post("http://localhost:3001/user/login",userInfo)
-.then((res)=>{
-  console.log(res.data)
-  if(res.data){
+    // Making POST request to login API
+    await axios.post("http://localhost:3001/user/login", userInfo)
+      .then((res) => {
+        console.log(res.data);
 
-   // alert("Login successfully")
-   toast.success("Login successfully");
-    document.getElementById("my_modal_3").close();
-    Navigate(from,{state:{from:location.pathname}})
+        if (res.data) {
+          // Show success message using toast
+          toast.success("Login successfully");
 
-   setTimeout(() => {
-        window.location.reload();
-        localStorage.setItem("Users",JSON.stringify(res.data.user));
-      },1000)
+          // Close the login modal
+          document.getElementById("my_modal_3").close();
 
+          // Navigate to previous page or homepage
+          Navigate(from, { state: { from: location.pathname } });
 
-  }
-
-}).catch((err)=>{
-  if(err.response){
-    console.log(err)
-    //alert("Errror"+err.response.data.message);
-    toast.error(err.response.data.message);
-    setTimeout(() => {
-      
-    },2000)
-    
-  }
-  
-})
-
-
-  }
+          // Reload page and store user data in localStorage
+          setTimeout(() => {
+            window.location.reload();
+            localStorage.setItem("Users", JSON.stringify(res.data.user));
+          }, 1000);
+        }
+      })
+      .catch((err) => {
+        // If API returns an error
+        if (err.response) {
+          console.log(err);
+          // Show error message from response
+          toast.error(err.response.data.message);
+        }
+      });
+  };
 
   return (
+    // Using HTML5 <dialog> element as modal
     <dialog id="my_modal_3" className="modal">
       <div className="modal-box">
-        {/* Close button form - separate from login form */}
+        {/* Button to close the modal */}
         <form method="dialog">
           <button className="btn btn-sm btn-circle btn-ghost absolute right-2 top-2">✕</button>
         </form>
-        
+
+        {/* Login modal title */}
         <h3 className="font-bold text-lg">Login</h3>
-        
-        {/* Main login form */}
+
+        {/* Login form begins */}
         <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
-          {/* Email Field */}
+          {/* Email Input Field */}
           <div className="mt-4 space-y-2">
             <label>Email</label>
             <input 
-              type="emailid" 
+              type="emailid"  // Input type (Note: remains unchanged as per request)
               placeholder="Enter your email" 
               className='w-full px-3 py-1 border rounded-md outline-none'
               {...register("emailid", { required: "Email is required" })}
             />
-            {errors.email && (
-              <span className='text-sm text-red-500'>{errors.email.message}</span>
+            {/* Show validation error if any */}
+            {errors.emailid && (
+              <span className='text-sm text-red-500'>{errors.emailid.message}</span>
             )}
           </div>
 
-          {/* Password Field */}
+          {/* Password Input Field */}
           <div className="mt-4 space-y-2">
             <label>Password</label>
             <input 
-              type="password" 
-              placeholder="Enter your password" 
+              type="password"
+              placeholder="Enter your password"
               className='w-full px-3 py-1 border rounded-md outline-none'
               {...register("password", { required: "Password is required" })}
             />
+            {/* Show validation error if any */}
             {errors.password && (
               <span className='text-sm text-red-500'>{errors.password.message}</span>
             )}
           </div>
 
-          {/* Actions */}
+          {/* Login Button and Signup Redirect */}
           <div className="flex justify-between items-center mt-6">
             <button 
               type="submit"
@@ -111,8 +127,8 @@ await axios.post("http://localhost:3001/user/login",userInfo)
           </div>
         </form>
       </div>
-      
-      {/* Modal backdrop for clicking outside to close */}
+
+      {/* Backdrop click closes the modal */}
       <form method="dialog" className="modal-backdrop">
         <button>close</button>
       </form>

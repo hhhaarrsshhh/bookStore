@@ -12,15 +12,18 @@ function Freebook() {
     const getBook = async () => {
       try {
         const res = await axios.get("http://localhost:3001/book");
-        // Case-insensitive check for category
-        const data = res.data.filter((item) => item.category.toLowerCase() === "free");
+
+        // Filter only books with category "free"
+        const data = res.data.filter(
+          (item) => item.category && item.category.toLowerCase() === "free"
+        );
+
         setBook(data);
-      } 
-      
-      catch (err) {
+      } catch (err) {
         console.log(err);
       }
     };
+
     getBook();
   }, []);
 
@@ -64,15 +67,14 @@ function Freebook() {
       <div>
         <h1 className="font-semibold text-xl pb-2">Free Offered Courses</h1>
         <p>
-          Lorem ipsum dolor sit amet, consectetur adipisicing elit. Accusantium
-          veritatis alias pariatur ad dolor repudiandae eligendi corporis nulla
-          non suscipit, iure neque earum?
+          Browse through free courses and resources to start learning without
+          spending a penny!
         </p>
       </div>
 
       <Slider {...settings}>
         {book.map((item) => (
-          <Card item={item} key={item.id} />
+          <Card item={item} key={item._id} />
         ))}
       </Slider>
     </div>
